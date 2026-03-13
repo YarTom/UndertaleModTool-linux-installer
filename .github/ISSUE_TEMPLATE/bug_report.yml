@@ -1,0 +1,50 @@
+name: "Bug Report"
+description: "File a bug report."
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Please describe the issue you encountered.
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: input
+    id: distribution
+    attributes:
+      label: Linux Distribution
+      description: What Linux distribution are you using?
+      placeholder: ex. Ubuntu 22.04, Fedora 38, Arch Linux
+    validations:
+      required: true
+  - type: input
+    id: hardware
+    attributes:
+      label: Hardware Configuration
+      description: Please specify your CPU, GPU, and RAM
+      placeholder: ex. Intel i5-12400F, NVIDIA RTX 3060, 16GB RAM
+    validations:
+      required: true
+  - type: input
+    id: wine-version
+    attributes:
+      label: Wine Version
+      description: What Wine version are you using? (wine --version)
+      placeholder: ex. wine-11.0
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
