@@ -1,10 +1,12 @@
-# UndertaleModTool Installer
+# UndertaleModTool Unix Installer
 
 Unofficial **[UndertaleModTool GUI](https://github.com/UnderminersTeam/UndertaleModTool)** installer for Linux and macOS via Wine.
 
 ---
 
 ## Install or Update
+
+Just one command:
 
 ### Linux
 
@@ -14,24 +16,10 @@ curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-install
 
 ### MacOS
 ```bash
-curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install-macos.sh | bash
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install-macos.sh | zsh
 ```
 
----
-
-### Uninstall
-
-### Linux
-
-```bash
-curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall-macos.sh | bash
-```
-
-### MacOS
-
-```bash
-curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall-linux.sh | bash
-```
+![macos](https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/images/macOS.png)
 
 ---
 
@@ -51,6 +39,22 @@ After installation:
   ```bash
   utmt [path_to_file]
   ```
+---
+
+### Uninstall
+
+### Linux
+
+```bash
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall-linux.sh | bash
+```
+
+### MacOS
+
+```bash
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall-macos.sh | zsh
+```
+
 ---
 
 ## About
@@ -80,6 +84,8 @@ The goal of this project is to create a unified way to install UndertaleModTool 
 
 - Linux Mint 22.2
 - Fedora 43
+
+- MacOS Big Sur 11.7.11
 
 _You can open a pull request and add your distribution here if the script works for you._
 
