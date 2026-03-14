@@ -76,7 +76,10 @@ echo "Setting up Wine prefix at: $PREFIX"
 mkdir -p "$PREFIX"
 
 echo "Installing core fonts (this may take a moment)..."
-winetricks -q corefonts 2>/dev/null
+WINEPREFIX="$PREFIX" winetricks -q corefonts 2>/dev/null
+
+echo "Configuring DPI..."
+WINEPREFIX="$PREFIX" wine reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v LogPixels /t REG_DWORD /d 144 /f 2>/dev/null
 
 echo ""
 echo "Downloading UndertaleModTool..."
@@ -105,7 +108,7 @@ cat > "$PREFIX/UndertaleModTool.sh" << EOF
 # that Windows understands.
 # Opening the file will work without conversion, but then when saving,
 # you will need to manually specify the path to data.win in Windows format.
-_WINE_PATH="Z:\${1//\//\\\\}"
+_WINE_PATH=$(echo "\$1" | sed 's#^file://##' | sed 's#/#\\#g' | sed 's#^#Z:\\\\#')
 # Uncomment if you want to use native path:
 # _WINE_PATH="\$1"
 
@@ -113,7 +116,7 @@ _WINE_PATH="Z:\${1//\//\\\\}"
 _UTMT_PATH="$PREFIX/drive_c/Program Files/UndertaleModTool/UndertaleModTool.exe"
 
 # Your Wineprefix path. You can configure it by using the command:
-# 'WINEPREFIX="/home/yartom/.wine_undertalemodtool" winecfg'
+# 'WINEPREFIX="$PREFIX" winecfg'
 _WINEPREFIX="$PREFIX"
 
 # Disable hardware acceleration because it causes artifacts.
@@ -147,23 +150,26 @@ EOF
 chmod +x "$HOME/.local/share/applications/UndertaleModTool.desktop"
 update-desktop-database ~/.local/share/applications/ 2>/dev/null || true
 
-echo "Configuring dpi..."
-WINEPREFIX="$PREFIX" wine reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v LogPixels /t REG_DWORD /d 144 /f 2>/dev/null
+
 
 read -p "Do you want to add UndertaleModTool aliases for easy terminal access? (y/N): " add_alias < /dev/tty
+
+for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
+    [ -f "$file" ] && sed -i '/^alias UndertaleModTool=/d' "$file" 2>/dev/null
+    [ -f "$file" ] && sed -i '/^alias utmt=/d' "$file" 2>/dev/null
+done
+
 if [ "$add_alias" = "y" ]; then
     alias_cmd="alias UndertaleModTool=\"$PREFIX/UndertaleModTool.sh\"
 alias utmt=\"$PREFIX/UndertaleModTool.sh\""
 
     for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
         if [ -f "$file" ]; then
-            if ! grep -q "alias UndertaleModTool=" "$file" 2>/dev/null; then
-                echo "$alias_cmd" >> "$file"
-                echo "Added aliases 'UndertaleModTool' and 'utmt' to $file"
-                echo "Restart your terminal to apply the changes."
-            fi
+            echo "$alias_cmd" >> "$file"
+            echo "Added aliases 'UndertaleModTool' and 'utmt' to $file"
         fi
     done
+    echo "Restart your terminal to apply the changes."
 fi
 
 echo ""

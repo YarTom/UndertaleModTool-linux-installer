@@ -1,13 +1,13 @@
 #!/bin/bash
 
-echo "=========================================="
-echo "  UndertaleModTool Uninstaller for Linux"
-echo "=========================================="
+echo "==========================================="
+echo "  UndertaleModTool Uninstaller for macOS"
+echo "==========================================="
 echo ""
 
 PREFIX="$HOME/.wine_undertalemodtool"
 LAUNCHER="$PREFIX/UndertaleModTool.sh"
-DESKTOP_FILE="$HOME/.local/share/applications/UndertaleModTool.desktop"
+APP_DIR="/Applications/UndertaleModTool.app"
 
 if [ ! -f "$LAUNCHER" ]; then
     echo "No installation found at: $PREFIX"
@@ -19,7 +19,7 @@ echo "Found installation at: $PREFIX"
 echo ""
 echo "Will be removed:"
 echo "  • Wine prefix: $PREFIX"
-echo "  • Desktop entry: $DESKTOP_FILE"
+echo "  • Application: $APP_DIR"
 echo "  • Terminal aliases (if added)"
 echo ""
 read -p "Do you want to continue? (y/N): " confirm < /dev/tty
@@ -35,16 +35,17 @@ echo "Removing files..."
 rm -rf "$PREFIX"
 echo "  ✓ Removed Wine prefix"
 
-rm -f "$DESKTOP_FILE"
-echo "  ✓ Removed desktop entry"
+rm -rf "$APP_DIR"
+echo "  ✓ Removed application bundle"
 
-for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
-    [ -f "$file" ] && sed -i '/^alias UndertaleModTool/d' "$file" 2>/dev/null
-    [ -f "$file" ] && sed -i '/^alias utmt/d' "$file" 2>/dev/null
-done
-echo "  ✓ Removed terminal aliases"
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -u "$APP_DIR" 2>/dev/null || true
 
-update-desktop-database ~/.local/share/applications/ 2>/dev/null || true
+if [ -f ~/.zshrc ]; then
+    sed -i '' '/# UndertaleModTool aliases/d' ~/.zshrc 2>/dev/null
+    sed -i '' '/^alias UndertaleModTool=/d' ~/.zshrc 2>/dev/null
+    sed -i '' '/^alias utmt=/d' ~/.zshrc 2>/dev/null
+    echo "  ✓ Removed terminal aliases from ~/.zshrc"
+fi
 
 echo ""
 echo "================================"

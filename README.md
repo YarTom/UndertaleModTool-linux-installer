@@ -1,17 +1,34 @@
-# UndertaleModTool Linux Installer
+# UndertaleModTool Installer
 
-Unofficial **[UndertaleModTool GUI](https://github.com/UnderminersTeam/UndertaleModTool)** installer for Linux via Wine.
+Unofficial **[UndertaleModTool GUI](https://github.com/UnderminersTeam/UndertaleModTool)** installer for Linux and macOS via Wine.
 
 ---
 
-## Quick Start
+## Install or Update
 
-Install or Update
+### Linux
+
 ```bash
 curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install-linux.sh | bash
 ```
 
-Uninstall
+### MacOS
+```bash
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install-macos.sh | bash
+```
+
+---
+
+### Uninstall
+
+### Linux
+
+```bash
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall-macos.sh | bash
+```
+
+### MacOS
+
 ```bash
 curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall-linux.sh | bash
 ```
