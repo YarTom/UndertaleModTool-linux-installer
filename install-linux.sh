@@ -29,8 +29,7 @@ NIGHTLY_URL=$(echo "$NIGHTLY_INFO" | grep -o "https://github.com/.*GUI-windows-l
 echo "Checking for Wine installation..."
 command -v wine &> /dev/null
 if [ $? -ne 0 ]; then
-    echo "Wine is not installed. Do you want to install Wine now? (requires sudo password)"
-    read -p "> " install_wine < /dev/tty
+    read -p "Wine is not installed. Do you want to install Wine now? (requires sudo password) (y/N): " choice < /dev/tty
     if [ "$install_wine" = "y" ]; then
         echo "Installing Wine and winetricks..."
         if command -v apt &> /dev/null; then
@@ -123,6 +122,22 @@ update-desktop-database ~/.local/share/applications/ 2>/dev/null || true
 echo "Configuring dpi..."
 WINEPREFIX="$PREFIX" wine reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v LogPixels /t REG_DWORD /d 144 /f 2>/dev/null
 
+read -p "Do you want to add UndertaleModTool aliases for easy terminal access? (y/N): " add_alias < /dev/tty
+if [ "$add_alias" = "y" ]; then
+    alias_cmd="alias UndertaleModTool=\"$PREFIX/UndertaleModTool.sh\"
+alias utmt=\"$PREFIX/UndertaleModTool.sh\""
+
+    for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
+        if [ -f "$file" ]; then
+            if ! grep -q "alias UndertaleModTool=" "$file" 2>/dev/null; then
+                echo "$alias_cmd" >> "$file"
+                echo "Added aliases 'UndertaleModTool' and 'utmt' to $file"
+                echo "Restart your terminal to apply the changes."
+            fi
+        fi
+    done
+fi
+
 echo ""
 echo "========================================"
 echo "  Installation completed successfully!"
@@ -130,7 +145,11 @@ echo "========================================"
 echo ""
 echo "You can now launch UndertaleModTool:"
 echo "  • From your applications menu (search for 'UndertaleModTool')"
-echo "  • Or via terminal: $PREFIX/UndertaleModTool.sh [file]"
+if [ "$add_alias" = "y" ]; then
+    echo "  • Or via terminal: 'UndertaleModTool [file]' or 'utmt [file]'"
+else
+    echo "  • Or via terminal: $PREFIX/UndertaleModTool.sh [file]"
+fi
 echo ""
 echo "Notes:"
 echo "  • First launch may take longer as Wine initializes"

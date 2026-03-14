@@ -20,6 +20,7 @@ echo ""
 echo "Will be removed:"
 echo "  • Wine prefix: $PREFIX"
 echo "  • Desktop entry: $DESKTOP_FILE"
+echo "  • Terminal aliases (if added)"
 echo ""
 read -p "Do you want to continue? (y/N): " confirm < /dev/tty
 
@@ -36,6 +37,12 @@ echo "  ✓ Removed Wine prefix"
 
 rm -f "$DESKTOP_FILE"
 echo "  ✓ Removed desktop entry"
+
+for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
+    [ -f "$file" ] && sed -i '/^alias UndertaleModTool/d' "$file" 2>/dev/null
+    [ -f "$file" ] && sed -i '/^alias utmt/d' "$file" 2>/dev/null
+done
+echo "  ✓ Removed terminal aliases"
 
 update-desktop-database ~/.local/share/applications/ 2>/dev/null || true
 
