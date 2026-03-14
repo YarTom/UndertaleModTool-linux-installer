@@ -98,10 +98,38 @@ curl -s "https://raw.githubusercontent.com/UnderminersTeam/UndertaleModTool/refs
 echo "Creating launch script..."
 cat > "$PREFIX/UndertaleModTool.sh" << EOF
 #!/bin/bash
-WINE_PATH="Z:\${1//\//\\\\}"
-WINEPREFIX="$PREFIX" \\
-WINEDLLOVERRIDES="d3d9=d;d3d10=d;d3d11=d" \\
-wine "$PREFIX/drive_c/Program Files/UndertaleModTool/UndertaleModTool.exe" "\$WINE_PATH"
+
+# Hi! This is a simple script to run Undertale Mod Tool using Wine on Linux.
+
+# Wine path is needed to convert the path to the data.win file into a format
+# that Windows understands.
+# Opening the file will work without conversion, but then when saving,
+# you will need to manually specify the path to data.win in Windows format.
+_WINE_PATH="Z:\${1//\//\\\\}"
+# Uncomment if you want to use native path:
+# _WINE_PATH="\$1"
+
+# UTMT path
+_UTMT_PATH="$PREFIX/drive_c/Program Files/UndertaleModTool/UndertaleModTool.exe"
+
+# Your Wineprefix path. You can configure it by using the command:
+# 'WINEPREFIX="/home/yartom/.wine_undertalemodtool" winecfg'
+_WINEPREFIX="$PREFIX"
+
+# Disable hardware acceleration because it causes artifacts.
+# You can remove this line if you have a compatible graphics driver.
+_WINEDLLOVERRIDES="d3d9=d;d3d10=d;d3d11=d"
+
+# Display server. I recommend using Xorg,
+# since there may be display issues with Wayland.
+# If you have Wayland, the program will run through XWayland.
+# Use xorg or XWayland:
+_DISPLAY=:0
+# Uncomment next line to force use of Wayland (only for wine versions 10+):
+# _DISPLAY=
+
+# Launch command
+DISPLAY=\$_DISPLAY WINEDLLOVERRIDES="\$_WINEDLLOVERRIDES" WINEPREFIX="\$_WINEPREFIX" wine "\$_UTMT_PATH" "\$_WINE_PATH"
 EOF
 chmod +x "$PREFIX/UndertaleModTool.sh"
 
@@ -154,7 +182,7 @@ echo ""
 echo "Notes:"
 echo "  • First launch may take longer as Wine initializes"
 echo "  • To reinstall or update, simply run this script again"
-echo "  • To configure the wine settings run 'WINEPREFIX=\"$PREFIX\" winecfg'"
+echo "  • For more configuration options, edit the launch script at: $LAUNCHER"
 echo "  • If you see any issues, please report them to me (https://github.com/YarTom/UndertaleModTool-linux-installer/issues)"
 echo ""
 echo "Enjoy modding!"

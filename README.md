@@ -24,7 +24,7 @@ curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-install
 - Automatically creates wineprefix (`~/.wine_undertalemodtool`)
 - You select the version (Stable or Nightly) for automatic installation
 - Creates a desktop menu entry
-- Creates 'utmt' and 'UndertaleModTool' for easy terminal access (optional)
+- Creates 'utmt' and 'UndertaleModTool' aliases for easy terminal access (optional)
 
 ---
 
