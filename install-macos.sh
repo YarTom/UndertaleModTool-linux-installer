@@ -10,7 +10,8 @@ LAUNCHER="$PREFIX/UndertaleModTool.sh"
 
 if [ -f "$LAUNCHER" ]; then
     echo "An existing installation was found at: $PREFIX"
-    read -p "Do you want to reinstall? This will overwrite the current version. (y/N): " reinstall < /dev/tty
+    printf "Do you want to reinstall? This will overwrite the current version. (y/N): "
+    read reinstall < /dev/tty
     if [ "$reinstall" != "y" ]; then
         echo "Installation cancelled."
         exit 0
@@ -30,7 +31,8 @@ echo "Checking for Wine installation..."
 command -v wine &> /dev/null
 if [ $? -ne 0 ]; then
     echo "Wine is not installed."
-    read -p "Do you want to install Wine via Homebrew? (requires sudo password) (y/N): " install_wine < /dev/tty
+    printf "Do you want to install Wine via Homebrew? (requires sudo password) (y/N): "
+    read install_wine < /dev/tty
     if [ "$install_wine" = "y" ]; then
         if ! command -v brew &> /dev/null; then
             echo "Homebrew is not installed. Please install Homebrew first:"
@@ -54,7 +56,8 @@ echo "Available versions:"
 echo "  1) Release (Stable)"
 echo "  2) Nightly (Latest)"
 echo ""
-read -p "Choose version (1 or 2): " choice < /dev/tty
+printf "Choose version (1 or 2): "
+read choice < /dev/tty
 
 if [ "$choice" = "1" ]; then
     URL="$RELEASE_URL"
@@ -207,7 +210,8 @@ touch "$APP_DIR"
 echo "Refreshing LaunchServices database..."
 /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "$APP_DIR" 2>/dev/null || true
 
-read -p "Do you want to add UndertaleModTool aliases for easy terminal access? (y/N): " add_alias < /dev/tty
+printf "Do you want to add UndertaleModTool aliases for easy terminal access? (y/N): "
+read add_alias < /dev/tty
 
 if [ -f ~/.zshrc ]; then
     sed -i '' '/# UndertaleModTool aliases/d' ~/.zshrc 2>/dev/null
