@@ -146,6 +146,7 @@ Icon=$PREFIX/drive_c/Program Files/UndertaleModTool/icon.ico
 Type=Application
 Categories=Development;
 MimeType=application/octet-stream;
+Keywords=utmt;
 EOF
 chmod +x "$HOME/.local/share/applications/UndertaleModTool.desktop"
 update-desktop-database ~/.local/share/applications/ 2>/dev/null || true
