@@ -48,7 +48,7 @@ if [ $? -ne 0 ]; then
             exit 1
         fi
         echo "Installing Wine..."
-        brew install --cask wine-stable
+        brew install --cask wine
         echo "Wine installation completed."
     else
         echo -e "${RED}Wine is required to run UndertaleModTool. Installation cancelled.${NC}"
@@ -62,7 +62,7 @@ if brew list --formula | grep -q "^winetricks$"; then
 else
     echo "WineTricks is not installed."
     printf "Do you want to install WineTricks via Homebrew? (requires sudo password) (y/N): "
-    
+
     read install_winetricks < /dev/tty
     if [ "$install_winetricks" = "y" ] || [ "$install_winetricks" = "Y" ]; then
         if ! command -v brew &> /dev/null; then
@@ -152,7 +152,7 @@ _WINEPREFIX="$PREFIX"
 _WINEDLLOVERRIDES="d3d9=d;d3d10=d;d3d11=d"
 
 # Launch command
-WINEDLLOVERRIDES="\$_WINEDLLOVERRIDES" WINEPREFIX="\$_WINEPREFIX" /usr/local/bin/wine "\$_UTMT_PATH" "\$_WINE_PATH"
+WINEDLLOVERRIDES="\$_WINEDLLOVERRIDES" WINEPREFIX="\$_WINEPREFIX" wine "\$_UTMT_PATH" "\$_WINE_PATH"
 EOF
 chmod +x "$PREFIX/UndertaleModTool.sh"
 
