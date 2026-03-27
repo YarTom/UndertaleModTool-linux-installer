@@ -36,10 +36,9 @@ RELEASE_URL=$(echo "$RELEASE_INFO" | grep -o "https://github.com/.*-Windows.zip"
 NIGHTLY_URL=$(echo "$NIGHTLY_INFO" | grep -o "https://github.com/.*GUI-windows-latest-Debug-isBundled-true-isSingleFile-false.zip" | head -1)
 
 echo -e "${GREEN}Checking for Wine installation...${NC}"
-command -v wine &> /dev/null
-if [ $? -ne 0 ]; then
-    echo -e "Wine is not installed."
-    echo -e "Do you want to install Wine now? (${RED}y${NC}/${GREEN}N${NC}): \c"
+if ! command -v wine >/dev/null 2>&1 || ! command -v winetricks >/dev/null 2>&1; then
+    echo -e "Wine or winetricks is not installed."
+    echo -e "Do you want to try install Wine and winetricks now? (${RED}y${NC}/${GREEN}N${NC}): \c"
     read choice < /dev/tty
     if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then
         echo -e "${GREEN}Installing Wine and winetricks...${NC}"
@@ -47,10 +46,17 @@ if [ $? -ne 0 ]; then
             sudo apt install -y wine winetricks
         elif command -v dnf &> /dev/null; then
             sudo dnf install -y wine winetricks
+        elif command -v rpm-ostree &> /dev/null; then
+            sudo rpm-ostree install wine winetricks
+            echo -e "${YELLOW}rpm-ostree requires a reboot to complete installation. Please reboot and run this script again.${NC}"
+            echo -e "'${BLUE}sudo systemctl reboot${NC}'"
+            exit 0  
         elif command -v pacman &> /dev/null; then
             sudo pacman -S --noconfirm wine winetricks
         else
-            echo -e "${RED}Error: Unsupported package manager. Please install Wine manually, then run this script again.${NC}"
+            echo -e "${RED}Сouldn't install Wine automatically. Wine is required to run UndertaleModTool.${NC}"
+            echo -e "To proceed you should install wine manually. See more on the official website: ${BLUE}winehq.org${NC}"
+            echo -e "${RED}Installation cancelled.${NC}"
             exit 1
         fi
         echo -e "${GREEN}Wine installation completed.${NC}"
