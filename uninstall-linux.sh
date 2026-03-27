@@ -1,8 +1,16 @@
 #!/bin/bash
 
-echo "=========================================="
-echo "  UndertaleModTool Uninstaller for Linux"
-echo "=========================================="
+# Color definitions
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+BOLD='\033[1m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}==========================================${NC}"
+echo -e "${GREEN}${BOLD}  UndertaleModTool Uninstaller for Linux${NC}"
+echo -e "${GREEN}==========================================${NC}"
 echo ""
 
 PREFIX="$HOME/.wine_undertalemodtool"
@@ -10,45 +18,47 @@ LAUNCHER="$PREFIX/UndertaleModTool.sh"
 DESKTOP_FILE="$HOME/.local/share/applications/UndertaleModTool.desktop"
 
 if [ ! -f "$LAUNCHER" ]; then
-    echo "No installation found at: $PREFIX"
-    echo "Nothing to uninstall."
+    echo -e "${RED}No installation found at: ${BLUE}$PREFIX${NC}"
+    echo -e "${RED}Nothing to uninstall.${NC}"
     exit 0
 fi
 
-echo "Found installation at: $PREFIX"
+echo -e "Found installation at: ${NC}$PREFIX${NC}"
 echo ""
-echo "Will be removed:"
-echo "  • Wine prefix: $PREFIX"
-echo "  • Desktop entry: $DESKTOP_FILE"
-echo "  • Terminal aliases (if added)"
+echo -e "${GREEN}${BOLD}Will be removed:${NC}"
+echo -e "  • Wine prefix: ${BLUE}$PREFIX${NC}"
+echo -e "  • Desktop entry: ${BLUE}$DESKTOP_FILE${NC}"
+echo -e "  • Terminal aliases (if added)"
 echo ""
-read -p "Do you want to continue? (y/N): " confirm < /dev/tty
+
+echo -e "Do you want to continue? (${RED}y${NC}/${GREEN}N${NC}): \c"
+read -p "" confirm < /dev/tty
 
 if [ "$confirm" != "y" ]; then
-    echo "Uninstall cancelled."
+    echo -e "${GREEN}Uninstall cancelled.${NC}"
     exit 0
 fi
 
 echo ""
-echo "Removing files..."
+echo -e "${RED}Removing files...${NC}"
 
 rm -rf "$PREFIX"
-echo "  ✓ Removed Wine prefix"
+echo -e "  ${RED}✓ Removed Wine prefix"
 
 rm -f "$DESKTOP_FILE"
-echo "  ✓ Removed desktop entry"
+echo -e "  ${RED}✓ Removed desktop entry"
 
 for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
     [ -f "$file" ] && sed -i '/^alias UndertaleModTool/d' "$file" 2>/dev/null
     [ -f "$file" ] && sed -i '/^alias utmt/d' "$file" 2>/dev/null
 done
-echo "  ✓ Removed terminal aliases"
+echo -e "  ${RED}✓ Removed terminal aliases"
 
 update-desktop-database ~/.local/share/applications/ 2>/dev/null || true
 
 echo ""
-echo "================================"
-echo "      Uninstall completed!"
-echo "================================"
+echo -e "${RED}================================${NC}"
+echo -e "${RED}${BOLD}      Uninstall completed!${NC}"
+echo -e "${RED}================================${NC}"
 echo ""
-echo "UndertaleModTool has been removed."
+echo -e "${GREEN}UndertaleModTool has been removed.${NC}"
