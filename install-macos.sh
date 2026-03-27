@@ -47,16 +47,36 @@ if [ $? -ne 0 ]; then
             echo -e "  ${WHITE}/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"${NC}"
             exit 1
         fi
-        echo -e "${GREEN}Installing Wine and winetricks...${NC}"
+        echo "Installing Wine..."
         brew install --cask wine-stable
-        brew install winetricks
-        echo -e "${GREEN}Wine installation completed.${NC}"
+        echo "Wine installation completed."
     else
         echo -e "${RED}Wine is required to run UndertaleModTool. Installation cancelled.${NC}"
         exit 1
     fi
 else
     echo -e "${GREEN}Wine is already installed.${NC}"
+fi
+if brew list --formula | grep -q "^winetricks$"; then
+    # do flipping nothing :P could maybe print WineTricks is installed
+else
+    echo "WineTricks is not installed."
+    printf "Do you want to install WineTricks via Homebrew? (requires sudo password) (y/N): "
+    
+    read install_winetricks < /dev/tty
+    if [ "$install_winetricks" = "y" ]; then
+        if ! command -v brew &> /dev/null; then
+            echo "Homebrew is not installed. Please install Homebrew first:"
+            echo "  /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
+            exit 1
+        fi
+        echo "Installing winetricks..."
+        brew install winetricks
+        echo "WineTricks installation completed."
+    else
+        echo "WineTricks is required to run UndertaleModTool. Installation cancelled."
+        exit 1
+    fi
 fi
 echo ""
 
