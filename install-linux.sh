@@ -20,7 +20,7 @@ if [ -f "$LAUNCHER" ]; then
     echo -e "An existing installation was found at: ${BLUE}$PREFIX${NC}"
     echo -e "Do you want to reinstall? This will overwrite the current version. (${RED}y${NC}/${GREEN}N${NC}): \c"
     read reinstall < /dev/tty
-    if [ "$reinstall" != "y" ]; then
+    if [ "$reinstall" != "y" ] && [ "$reinstall" != "Y" ]; then
         echo -e "${GREEN}Installation cancelled.${NC}"
         exit 0
     fi
@@ -41,7 +41,7 @@ if [ $? -ne 0 ]; then
     echo -e "Wine is not installed."
     echo -e "Do you want to install Wine now? (${RED}y${NC}/${GREEN}N${NC}): \c"
     read choice < /dev/tty
-    if [ "$choice" = "y" ]; then
+    if [ "$choice" = "y" ] || [ "$choice" = "Y" ]; then
         echo -e "${GREEN}Installing Wine and winetricks...${NC}"
         if command -v apt &> /dev/null; then
             sudo apt install -y wine winetricks
@@ -171,7 +171,7 @@ for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
     [ -f "$file" ] && sed -i '/^alias utmt=/d' "$file" 2>/dev/null
 done
 
-if [ "$add_alias" = "y" ]; then
+if [ "$add_alias" = "y" ] || [ "$add_alias" = "Y" ]; then
     alias_cmd="alias UndertaleModTool=\"$PREFIX/UndertaleModTool.sh\"
 alias utmt=\"$PREFIX/UndertaleModTool.sh\""
 
@@ -190,7 +190,7 @@ echo -e "${GREEN}========================================${NC}"
 echo ""
 echo -e "${GREEN}You can now launch UndertaleModTool:${NC}"
 echo -e "  • From your applications menu (search for 'UndertaleModTool')"
-if [ "$add_alias" = "y" ]; then
+if [ "$add_alias" = "y" ] || [ "$add_alias" = "Y" ]; then
     echo -e "  • Or via terminal: '${BLUE}UndertaleModTool [file]${NC}' or '${BLUE}utmt [file]${NC}'"
 else
     echo -e "  • Or via terminal: ${BLUE}$PREFIX/UndertaleModTool.sh [file]${NC}"

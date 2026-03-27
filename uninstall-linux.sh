@@ -34,7 +34,7 @@ echo ""
 echo -e "Do you want to continue? (${RED}y${NC}/${GREEN}N${NC}): \c"
 read -p "" confirm < /dev/tty
 
-if [ "$confirm" != "y" ]; then
+if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ]; then
     echo -e "${GREEN}Uninstall cancelled.${NC}"
     exit 0
 fi

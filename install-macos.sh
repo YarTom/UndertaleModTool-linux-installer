@@ -20,7 +20,7 @@ if [ -f "$LAUNCHER" ]; then
     echo -e "An existing installation was found at: ${BLUE}$PREFIX${NC}"
     echo -e "Do you want to reinstall? This will overwrite the current version. (${RED}y${NC}/${GREEN}N${NC}): \c"
     read reinstall < /dev/tty
-    if [ "$reinstall" != "y" ]; then
+    if [ "$reinstall" != "y" ] && [ "$reinstall" != "Y" ]; then
         echo -e "${GREEN}Installation cancelled.${NC}"
         exit 0
     fi
@@ -41,7 +41,7 @@ if [ $? -ne 0 ]; then
     echo -e "Wine is not installed."
     echo -e "Do you want to install Wine via Homebrew? (${RED}y${NC}/${GREEN}N${NC}): \c"
     read install_wine < /dev/tty
-    if [ "$install_wine" = "y" ]; then
+    if [ "$install_wine" = "y" ] || [ "$install_wine" = "Y" ]; then
         if ! command -v brew &> /dev/null; then
             echo -e "${RED}Homebrew is not installed. Please install Homebrew first:${NC}"
             echo -e "  ${WHITE}/bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"${NC}"
@@ -64,7 +64,7 @@ else
     printf "Do you want to install WineTricks via Homebrew? (requires sudo password) (y/N): "
     
     read install_winetricks < /dev/tty
-    if [ "$install_winetricks" = "y" ]; then
+    if [ "$install_winetricks" = "y" ] || [ "$install_winetricks" = "Y" ]; then
         if ! command -v brew &> /dev/null; then
             echo "Homebrew is not installed. Please install Homebrew first:"
             echo "  /bin/bash -c \"\$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\""
@@ -247,7 +247,7 @@ if [ -f ~/.zshrc ]; then
     sed -i '' '/^alias utmt=/d' ~/.zshrc 2>/dev/null
 fi
 
-if [ "$add_alias" = "y" ]; then
+if [ "$add_alias" = "y" ] || [ "$add_alias" = "Y" ]; then
     alias_cmd="
 # UndertaleModTool aliases
 alias UndertaleModTool=\"$PREFIX/UndertaleModTool.sh\"
@@ -270,7 +270,7 @@ echo -e "${GREEN}========================================${NC}"
 echo ""
 echo -e "${GREEN}You can now launch UndertaleModTool:${NC}"
 echo -e "  • From Applications folder (search for 'UndertaleModTool')"
-if [ "$add_alias" = "y" ]; then
+if [ "$add_alias" = "y" ] || [ "$add_alias" = "Y" ]; then
     echo -e "  • Or via terminal: '${BLUE}UndertaleModTool [file]${NC}' or '${BLUE}utmt [file]${NC}'"
 else
     echo -e "  • Or via terminal: ${BLUE}$PREFIX/UndertaleModTool.sh [file]${NC}"
