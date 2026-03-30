@@ -126,7 +126,7 @@ cat > "$PREFIX/UndertaleModTool.sh" << EOF
 # that Windows understands.
 # Opening the file will work without conversion, but then when saving,
 # you will need to manually specify the path to data.win in Windows format.
-_WINE_PATH=\$(echo "\$1" | sed 's#^file://##' | sed 's#/#\\#g' | sed 's#^#Z:\\\\#')
+_WINE_PATH=\$(echo "\$1" | sed 's#^file://##' | sed 's#/#\\\\#g' | sed 's#^#Z:\\\\#')
 # Uncomment if you want to use native path:
 # _WINE_PATH="\$1"
 
@@ -178,11 +178,15 @@ for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
 done
 
 if [ "$add_alias" = "y" ] || [ "$add_alias" = "Y" ]; then
-    alias_cmd="alias UndertaleModTool=\"$PREFIX/UndertaleModTool.sh\"
-alias utmt=\"$PREFIX/UndertaleModTool.sh\""
+    alias_cmd="
+# UndertaleModTool aliases
+alias UndertaleModTool=\"$PREFIX/UndertaleModTool.sh\"
+alias utmt=\"$PREFIX/UndertaleModTool.sh\"
+"
 
     for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
         if [ -f "$file" ]; then
+            echo "$alias_cmd" >> "$file"
             echo -e "${GREEN}Added aliases 'UndertaleModTool' and 'utmt' to $file${NC}"
         fi
     done
