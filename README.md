@@ -14,6 +14,8 @@ curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-install
 
 ![macos](https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/images/macOS.png)
 
+![kde](https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/images/kde.png)
+
 ---
 
 ### Usage
@@ -71,6 +73,19 @@ The goal of this project is to create a unified way to install UndertaleModTool 
 - MacOS Big Sur 11.7.11
 
 _You can open a pull request and add your distribution here if the script works for you._
+
+---
+
+## Troubleshooting
+
+If you have problems with script execution, try to run it with `bash` explicitly:
+```bash
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install.sh | bash
+```
+or on macOS:
+```bash
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install.sh | zsh
+```
 
 ---
 
