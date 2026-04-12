@@ -8,15 +8,8 @@ Unofficial **[UndertaleModTool GUI](https://github.com/UnderminersTeam/Undertale
 
 Just one command:
 
-### Linux
-
 ```bash
-curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install-linux.sh | bash
-```
-
-### MacOS
-```bash
-curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install-macos.sh | zsh
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/install.sh | $(echo $0)
 ```
 
 ![macos](https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/images/macOS.png)
@@ -43,19 +36,9 @@ After installation:
 
 ### Uninstall
 
-### Linux
-
 ```bash
-curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall-linux.sh | bash
+curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall.sh | $(echo $0)
 ```
-
-### MacOS
-
-```bash
-curl -sL https://raw.githubusercontent.com/YarTom/UndertaleModTool-linux-installer/main/uninstall-macos.sh | zsh
-```
-
----
 
 ## About
 
