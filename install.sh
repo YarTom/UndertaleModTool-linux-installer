@@ -171,6 +171,7 @@ fi
 if [ "$overwrite" = "y" ] || [ "$overwrite" = "Y" ]; then
     echo -e "${GREEN}Creating launch script...${NC}"
 
+    DISPLAY_SETTING=""
     case "$(uname -s)" in
     Linux)
         DISPLAY_SETTING="# Display server. I recommend using Xorg,
@@ -180,12 +181,7 @@ if [ "$overwrite" = "y" ] || [ "$overwrite" = "Y" ]; then
 _DISPLAY=:0
 # Uncomment next line to force use of Wayland (only for wine versions 10+):
 # _DISPLAY=
-
-# Launch command
-DISPLAY=\$_DISPLAY"
-        ;;
-    *)
-        DISPLAY_SETTING=""
+"
         ;;
     esac
     cat > "$PREFIX/UndertaleModTool.sh" << EOF
@@ -193,13 +189,8 @@ DISPLAY=\$_DISPLAY"
 
 # Hi! This is a simple script to run Undertale Mod Tool using Wine.
 
-# Wine path is needed to convert the path to the data.win file into a format
-# that Windows understands.
-# Opening the file will work without conversion, but then when saving,
-# you will need to manually specify the path to data.win in Windows format.
-_WINE_PATH=\$(echo "\$1" | sed 's#^file://##' | sed 's#/#\\\\#g' | sed 's#^#Z:\\\\#')
-# Uncomment if you want to use native path:
-# _WINE_PATH="\$1"
+# Convert Unix path to Windows path using winepath
+_WINE_PATH=\$(winepath -w "\$1")
 
 # UTMT path
 _UTMT_PATH="$PREFIX/drive_c/Program Files/UndertaleModTool/UndertaleModTool.exe"
@@ -212,7 +203,7 @@ _WINEPREFIX="$PREFIX"
 # You can remove this line if you have a compatible graphics driver.
 _WINEDLLOVERRIDES="d3d9=d;d3d10=d;d3d11=d"
 
-$DISPLAY_SETTING WINEDLLOVERRIDES="\$_WINEDLLOVERRIDES" WINEPREFIX="\$_WINEPREFIX" wine "\$_UTMT_PATH" "\$_WINE_PATH"
+${DISPLAY_SETTING}WINEDLLOVERRIDES="\$_WINEDLLOVERRIDES" WINEPREFIX="\$_WINEPREFIX" wine "\$_UTMT_PATH" "\$_WINE_PATH"
 EOF
     chmod +x "$PREFIX/UndertaleModTool.sh"
 fi
