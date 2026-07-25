@@ -16,6 +16,7 @@ echo ""
 PREFIX="$HOME/.wine_undertalemodtool"
 LAUNCHER="$PREFIX/UndertaleModTool.sh"
 
+REINSTALL=false
 if [ -f "$LAUNCHER" ]; then
     echo -e "An existing installation was found at: ${BLUE}$PREFIX${NC}"
     echo -e "Do you want to reinstall? This will overwrite the current version. (${RED}y${NC}/${GREEN}N${NC}): \c"
@@ -26,6 +27,7 @@ if [ -f "$LAUNCHER" ]; then
     fi
     echo -e "${GREEN}Proceeding with reinstallation...${NC}"
     echo ""
+    REINSTALL=true
 fi
 
 echo -e "${GREEN}Fetching release information from GitHub...${NC}"
@@ -127,20 +129,24 @@ else
 fi
 
 echo ""
-echo -e "${GREEN}Setting up Wine prefix at: ${BLUE}$PREFIX${NC}"
-mkdir -p "$PREFIX"
+if [ "$REINSTALL" = false ]; then
+    echo -e "${GREEN}Setting up Wine prefix at: ${BLUE}$PREFIX${NC}"
+    mkdir -p "$PREFIX"
+    echo -e "${GREEN}Installing core fonts (this may take a moment)...${NC}"
+    WINEPREFIX="$PREFIX" winetricks -q corefonts
 
-echo -e "${GREEN}Installing core fonts (this may take a moment)...${NC}"
-WINEPREFIX="$PREFIX" winetricks -q corefonts
-
-echo -e "${GREEN}Configuring DPI...${NC}"
-WINEPREFIX="$PREFIX" wine reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v LogPixels /t REG_DWORD /d 144 /f
+    echo -e "${GREEN}Configuring DPI...${NC}"
+    WINEPREFIX="$PREFIX" wine reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v LogPixels /t REG_DWORD /d 144 /f
+else
+    echo -e "${GREEN}Using existing Wine prefix, preserving user settings.${NC}"
+fi
 
 echo ""
 echo -e "${GREEN}Downloading UndertaleModTool...${NC}"
 curl -# -L "$URL" -o "/tmp/UndertaleModTool.zip"
 
 echo -e "${GREEN}Extracting files...${NC}"
+rm -rf "$PREFIX/drive_c/Program Files/UndertaleModTool"
 mkdir -p "$PREFIX/drive_c/Program Files/UndertaleModTool"
 unzip -o "/tmp/UndertaleModTool.zip" -d "$PREFIX/drive_c/Program Files/UndertaleModTool" >> /dev/null
 rm "/tmp/UndertaleModTool.zip"
