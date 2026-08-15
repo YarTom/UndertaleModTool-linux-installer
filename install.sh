@@ -184,9 +184,9 @@ if [ "$overwrite" = "y" ] || [ "$overwrite" = "Y" ]; then
 # since there may be display issues with Wayland.
 # If you have Wayland, the program will run through XWayland.
 # Use xorg or XWayland:
-_DISPLAY=:0
+export DISPLAY=:0
 # Uncomment next line to force use of Wayland (only for wine versions 10+):
-# _DISPLAY=
+# export DISPLAY=
 "
         ;;
     esac
@@ -203,13 +203,16 @@ _UTMT_PATH="$PREFIX/drive_c/Program Files/UndertaleModTool/UndertaleModTool.exe"
 
 # Your Wineprefix path. You can configure it by using the command:
 # 'WINEPREFIX="$PREFIX" winecfg'
-_WINEPREFIX="$PREFIX"
+export WINEPREFIX="$PREFIX"
+
+# Turn off wine debug info
+export WINEDEBUG=fixme-all,warn-all,trace-all,err+all
 
 # Disable hardware acceleration because it causes artifacts.
 # You can remove this line if you have a compatible graphics driver.
-_WINEDLLOVERRIDES="d3d9=d;d3d10=d;d3d11=d"
+export WINEDLLOVERRIDES="d3d9=d;d3d10=d;d3d11=d"
 
-${DISPLAY_SETTING}WINEDLLOVERRIDES="\$_WINEDLLOVERRIDES" WINEPREFIX="\$_WINEPREFIX" wine "\$_UTMT_PATH" "\$_WINE_PATH"
+${DISPLAY_SETTING} wine "\$_UTMT_PATH" "\$_WINE_PATH"
 EOF
     chmod +x "$PREFIX/UndertaleModTool.sh"
 fi
