@@ -54,7 +54,7 @@ check_wine_linux() {
                 sudo rpm-ostree install wine winetricks
                 echo -e "${YELLOW}rpm-ostree requires a reboot to complete installation. Please reboot and run this script again.${NC}"
                 echo -e "'${BLUE}sudo systemctl reboot${NC}'"
-                exit 0  
+                exit 0
             elif command -v pacman &> /dev/null; then
                 sudo pacman -S --noconfirm wine winetricks
             else
@@ -104,7 +104,7 @@ case "$(uname -s)" in
   *)
     check_wine_linux
     ;;
-esac 
+esac
 
 echo ""
 
@@ -330,6 +330,25 @@ esac
 echo -e "Do you want to add UndertaleModTool aliases for easy terminal access? (${RED}y${NC}/${GREEN}N${NC}): \c"
 read add_alias < /dev/tty
 
+linux_alias_configs=(
+~/.profile
+~/.bash_profile
+~/.bash_login
+~/.bashrc
+~/.bash_aliases
+~/.zshenv
+~/.zprofile
+~/.zshrc
+~/.zlogin
+~/.config/fish/config.fish
+~/.config/bash/bashrc
+~/.config/bash/profile
+~/.config/zsh/.zshenv
+~/.config/zsh/.zprofile
+~/.config/zsh/.zshrc
+~/.config/zsh/.zlogin
+)
+
 case "$(uname -s)" in
   Darwin)
     if [ -f ~/.zshrc ]; then
@@ -338,7 +357,7 @@ case "$(uname -s)" in
     fi
     ;;
   *)
-    for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
+    for file in "${linux_alias_configs[@]}"; do
         [ -f "$file" ] && sed -i '/^alias UndertaleModTool=/d' "$file" 2>/dev/null
         [ -f "$file" ] && sed -i '/^alias utmt=/d' "$file" 2>/dev/null
     done

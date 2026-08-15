@@ -70,6 +70,25 @@ case "$(uname -s)" in
     ;;
 esac
 
+linux_alias_configs=(
+~/.profile
+~/.bash_profile
+~/.bash_login
+~/.bashrc
+~/.bash_aliases
+~/.zshenv
+~/.zprofile
+~/.zshrc
+~/.zlogin
+~/.config/fish/config.fish
+~/.config/bash/bashrc
+~/.config/bash/profile
+~/.config/zsh/.zshenv
+~/.config/zsh/.zprofile
+~/.config/zsh/.zshrc
+~/.config/zsh/.zlogin
+)
+
 case "$(uname -s)" in
   Darwin)
     if [ -f ~/.zshrc ]; then
@@ -79,7 +98,7 @@ case "$(uname -s)" in
     fi
     ;;
   *)
-    for file in ~/.profile ~/.bashrc ~/.zshrc ~/.config/fish/config.fish; do
+    for file in "${linux_alias_configs[@]}"; do
         [ -f "$file" ] && sed -i '/^alias UndertaleModTool=/d' "$file" 2>/dev/null
         [ -f "$file" ] && sed -i '/^alias utmt=/d' "$file" 2>/dev/null
     done
